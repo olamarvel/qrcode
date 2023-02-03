@@ -30,7 +30,7 @@
         "url": document.querySelector('#url').value
       });
 
-      let response = await fetch(location.host+"/qrcode", {
+      let response = await fetch(location.protocol + "/qrcode", {
         method: "POST",
         body: bodyContent,
         headers: headersList
