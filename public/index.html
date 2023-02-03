@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL to qrcode converter</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="input">
+    <input type="text" name="url" id="url">
+    <button type="submit" id="btn">convert</button>
+  </div>
+  <canvas>
+    so sorry your brower does not support canvas
+  </canvas>
+  <script>
+    const canvas = document.querySelector('canvas')
+    const c = canvas.getContext('2d')
+    document.querySelector('#btn').addEventListener('click', async (e) => {
+      let headersList = {
+        "Accept": "*/*",
+        "Content-Type": "application/json"
+      }
+
+      let bodyContent = JSON.stringify({
+        "url": document.querySelector('#url').value
+      });
+
+      let response = await fetch("http://localhost:3000/qrcode", {
+        method: "POST",
+        body: bodyContent,
+        headers: headersList
+      });
+
+      let data = await response.text();
+      const img = new Image(canvas.width, canvas.height)
+      img.onload = (e) => {
+        c.clearRect(0, 0, c.canvas.width, c.canvas.height)
+        c.drawImage(img, 0, 0, c.canvas.width, c.canvas.height)
+      }
+      img.src = data
+
+      console.log(data);
+    })
+  </script>
+</body>
+
+</html>
