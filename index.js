@@ -1,3 +1,19 @@
+const { spawn } = require('child_process');
+
+const child = spawn('which', ['ffmpeg']);
+
+child.stdout.on('data', (data) => {
+  console.log(`FFmpeg path: ${data}`);
+});
+
+child.stderr.on('data', (data) => {
+  console.error(`Error: ${data}`);
+});
+
+child.on('close', (code) => {
+  console.log(`child process exited with code ${code}`);
+});
+
 const express = require('express')
 const qr = require('qrcode')
 const path = require('path')
